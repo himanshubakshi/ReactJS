@@ -6,17 +6,32 @@ myArray['country'] = 'India'
 myArray['city'] = 'Pune'
 
 function makeQueryString(){
-  var output = '?'
+    var output = '?'
 
-  for(var item in myArray)
-  {
-    output += item + '=' + myArray[item] + '&'
-  //  console.log(item + ' ' + myArray[item]);
-  }
+    for(var item in myArray)
+    {
+      output += item + '=' + myArray[item] + '&'
+    //  console.log(item + ' ' + myArray[item]);
+    }
 
-  output = output.substring(0, output.length -1)
+    output = output.substring(0, output.length -1)
 
-  console.log(output);
+    console.log(output);
 }
 
-makeQueryString()
+
+// back tick operator
+var makeQueryString2 = function(){
+    var output = '?'
+
+    for(var item in myArray)
+    {
+        output += `${item}=${myArray[item]}&`
+    }
+
+    output = output.substring(0, output.length -1)
+
+    console.log(output);
+}
+
+makeQueryString2()
