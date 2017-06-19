@@ -10,7 +10,7 @@
   <body>
     <div id="rootContainer"></div>
 
-    <div id="message"></div>
+
 
     <script type="text/jsx">
 
@@ -42,17 +42,6 @@
           }
       }
 
-      // var appRoot = (
-      //     <div>
-      //       <input id="myUserName" placeholder="Username"/>
-      //       <input type="password" id="myPassword" placeholder="Password"/>
-      //
-      //       <button onClick={clickHandler}>Submit</button>
-      //
-      //     </div>
-      // );
-
-
       class HeaderSection extends React.Component{
         render(){
           return(
@@ -74,8 +63,11 @@
           return(
             <div>
               <input id="myUserName" placeholder="Username"/>
+              <br/>
               <input type="password" id="myPassword" placeholder="Password"/>
-
+              <br/>
+              <div id="message"></div>
+              
               <button onClick={clickHandler}>Submit</button>
             </div>
           )
@@ -103,8 +95,6 @@
 
 
       ReactDOM.render(<AppRoot/>, document.getElementById('rootContainer'));
-
-      // ReactDOM.render(appRoot, document.getElementById('rootContainer'));
 
     </script>
 
