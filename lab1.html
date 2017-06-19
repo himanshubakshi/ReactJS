@@ -10,6 +10,9 @@
   <body>
     <div id="rootContainer">
     </div>
+
+    <div id="message"></div>
+
     <script type="text/jsx">
 
         var inputUserName = (
@@ -34,6 +37,17 @@
         var clickHandler = function(){
             console.log("Button clicked");
 
+            var styleForegroundRed = {
+            	color:'red',
+            };
+
+            var styleForegroundGreen = {
+            	color:'green',
+            };
+
+
+            ReactDOM.render(<span>Logging In</span>, document.getElementById('message'));
+
             var acceptableUserName = 'admin';
             var acceptablePassword = 'admin';
 
@@ -42,16 +56,11 @@
 
             if(myUserName == acceptableUserName && myPassword == acceptablePassword)
             {
-              // document.getElementById("errorLabelSpan").style.visibility = "visible";
-              if(document.getElementById("errorLabelSpan").style.visibility == "visible")
-              {
-                document.getElementById("errorLabelSpan").style.visibility = "hidden"
-              }
-
+                ReactDOM.render(<span style={styleForegroundGreen}>Success</span>, document.getElementById('message'));
             }
             else
             {
-              document.getElementById("errorLabelSpan").style.visibility = "visible";
+                ReactDOM.render(<span style={styleForegroundRed}>Invalid Username or Password</span>, document.getElementById('message'));
             }
         }
 
