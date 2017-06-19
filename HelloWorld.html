@@ -1,0 +1,25 @@
+<html>
+  <head>
+    <script src="react.js"></script>
+    <script src="react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.25.0/babel.js">
+    </script>
+  </head>
+
+  <body>
+    <div id="myContainer">
+    </div>
+    <div id="myContainer2">
+      </div>
+
+    <script type="text/jsx">
+        var h1 = <h1>Hello World!!</h1>;  // This is not a string, its JSX syntax
+        ReactDOM.render(h1, document.getElementById('myContainer'));
+
+        var textElement = <input tye="text" />
+        ReactDOM.render(textElement, document.getElementById('myContainer2'));
+
+    </script>
+
+  </body>
+</html>
