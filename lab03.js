@@ -23,6 +23,7 @@ class Account
     {
       this.balance = 1000
       this.numberOfWithdrawls = 0
+      this.accountStatement = [];
     }
 
     deposit(amount)
@@ -30,7 +31,8 @@ class Account
         if(amount >= 0)
         {
           this.balance += amount;
-          console.log(`Deposited $${amount}, total balance = ${this.balance}`)
+
+          this.accountStatement.push(`Transaction Type: Deposit, Amount: $${amount}, Total Balance: ${this.balance}`);
         }
     }
 
@@ -45,20 +47,26 @@ class Account
             if(this.numberOfWithdrawls > 3)
             {
               this.balance -= 2;
-              console.log(`Deducted $2 for withdrawl no. ${this.numberOfWithdrawls}`)
+              //console.log(`Deducted $2 for withdrawl no. ${this.numberOfWithdrawls}`)
             }
-            console.log(`Withdrew $${amount}, total balance = ${this.balance}`)
+            this.accountStatement.push(`Transaction Type: Withdrawl, Amount: $${amount}, Total Balance: ${this.balance}`)
 
         }
     }
 
     printBalance()
     {
-          console.log(`Current Balance is: ${this.balance}`)
+        console.log(`Current Balance is: ${this.balance}`)
     }
 
+    printAccountStatement()
+    {
+        for(var item in this.accountStatement)
+        {
+            console.log(this.accountStatement[item]);
+        }
 
-
+    }
 }
 
 
@@ -70,3 +78,7 @@ account.withdraw(100)
 account.withdraw(100)
 account.withdraw(100)
 account.withdraw(100)
+
+account.printBalance()
+account.printAccountStatement()
+account.printBalance2()
