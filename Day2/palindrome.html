@@ -1,0 +1,76 @@
+<html>
+
+    <head>
+        <script src="react.js"> </script>
+        <script src="react-dom.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.25.0/babel.js"></script>
+    </head>
+
+    <body>
+            <div id="rootContainer"></div>
+            <div id="rootContainer2"></div>
+
+            <script type="text/jsx">
+
+                class RootView extends React.Component{
+
+                    constructor(props){
+                        super(props)
+
+                        // in check function, bind "this" keyword to component's this
+                        // For any custom function, we would need to bind 'this' of the component
+                        // to the function's this
+                        // This syntax is not very intuitive, handle this with care, missing this would cause failures
+                        this.checkButtonClickHandler = this.checkButtonClickHandler.bind(this)
+                    }
+
+                    checkButtonClickHandler(){
+
+                        var wordToCheck = this.inputTextBox.value
+                        // console.log(wordToCheck)
+
+                        var reversedWord = wordToCheck.split("").reverse().join("")
+
+                        if(wordToCheck == reversedWord)
+                        {
+                            // DO NOT USE THIS APPROACH
+                            // AS WE ARE ACCESSING THE REAL DOM DIRECTLY
+                            this.labelTextField.innerText = `${wordToCheck} is a palindrome`
+                            console.log(`${wordToCheck} is a palindrome`)
+                        }
+                        else
+                        {
+                            this.labelTextField.innerText = `${wordToCheck} is not a palindrome`
+                            console.log(`${wordToCheck} is not a palindrome`)
+                        }
+
+                    }
+
+                    render(){
+                        return (
+                            <div>
+                                <input ref={(ip) => this.inputTextBox = ip}
+                                    type="text"
+                                    id='myInputText'
+                                    placeholder='word to check'></input>
+                                <button onClick={this.checkButtonClickHandler}>check</button>
+                                <h1 ref={(obj) => this.labelTextField = obj}></h1>
+
+                          </div>
+                        )
+                    }
+
+                    componentDidMount(){
+
+                        // Ajax calls here
+                        console.log('---Component did mount')
+                    }
+                }
+
+
+                ReactDOM.render(<RootView />, document.getElementById('rootContainer'))
+                //   ReactDOM.render(<Lifecycle />, document.getElementById('rootContainer2'))
+
+            </script>
+      </body>
+</html>

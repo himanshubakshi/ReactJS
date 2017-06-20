@@ -1,0 +1,107 @@
+<html>
+
+    <head>
+        <script src="react.js"> </script>
+        <script src="react-dom.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.25.0/babel.js"></script>
+    </head>
+
+    <body>
+        <div id="rootContainer"></div>
+
+        <script type='text/jsx'>
+
+            class MainClass extends React.Component{
+
+                constructor(props){
+
+                    super(props)
+
+                    var randomNumber = this.getRandomNumber(0, 100)
+                    console.log(randomNumber)
+
+                    this.buttonClickHandler = this.buttonClickHandler.bind(this)
+                    this.resetButtonHandler = this.resetButtonHandler.bind(this)
+
+                    this.state = {
+                        numberOfttempts: 0,
+                        numberToGuess: randomNumber,
+                        message: ''
+                    }
+                }
+
+                resetButtonHandler(){
+                    this.inputTextBox.value = ''
+                    var randomNumber = this.getRandomNumber(0, 100)
+
+                    this.setState({
+                        numberOfttempts: 0,
+                        numberToGuess: randomNumber,
+                        message: 'New number Generated'
+                    })
+                    console.log(randomNumber)
+                }
+
+                buttonClickHandler(){
+                    console.log('button clicked')
+                    console.log(`Attempts: ${this.state.numberOfttempts}`)
+                    var numberValueToCheck = this.inputTextBox.value;
+
+                    if(numberValueToCheck.length == 0 || isNaN(numberValueToCheck) || numberValueToCheck>100 || numberValueToCheck<0 )
+                    {
+                        console.log(`printing value ${numberValueToCheck}`);
+                        this.setState({
+                            message: 'Please enter an integer between 0 and 100'
+                        })
+                        return;
+                    }
+
+                    this.state.numberOfttempts++;
+
+                    if(numberValueToCheck > this.state.numberToGuess){
+
+                        this.setState({
+                            message: 'Guess Lower'
+                        })
+                    }
+                    else if(numberValueToCheck < this.state.numberToGuess){
+                        this.setState({
+                            message: 'Guess Higher'
+                        })
+                    }
+                    else{
+                        this.setState({
+                            message: 'Good job, you guessed right'
+                        })
+                    }
+
+
+                }
+
+                getRandomNumber(min, max) {
+                    return Math.floor(Math.random() * (max - min) + min);
+                }
+
+                render(){
+                    return(
+                        <div>
+                            <input type='text' placeholder='guess the number'
+                            ref={(inputTB) => this.inputTextBox = inputTB}>
+                            </input>
+                            <br/>
+                            <button onClick={this.buttonClickHandler} >Submit</button>
+                            <br/>
+                            <button onClick={this.resetButtonHandler}>Reset</button>
+                            <h3>{this.state.message}</h3>
+                            <h3>Number of Attempts: {this.state.numberOfttempts}</h3>
+                        </div>
+                    )
+                }
+            }
+
+            ReactDOM.render(<MainClass/>, document.getElementById('rootContainer'))
+
+        </script>
+
+    </body>
+</html>

@@ -1,0 +1,42 @@
+<html>
+
+  <head>
+      <script src="react.js"> </script>
+      <script src="react-dom.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.25.0/babel.js"></script>
+  </head>
+
+  <body>
+      <div id="rootContainer"></div>
+      <div id="rootContainer2"></div>
+
+      <script type="text/jsx">
+
+          class Lifecycle extends React.Component{
+              componentWillMount(){
+                  console.log('---Component will mount')
+              }
+              render(){
+                  console.log('Rendering component')
+
+                  return (
+                      <h1>Lifecycle of a React Component</h1>
+                  )
+              }
+
+              // $(document).ready()
+              // Will be called olny once, only updates post the first load
+              componentDidMount(){
+
+                  // Ajax calls here
+                  console.log('---Component did mount')
+              }
+          }
+
+
+          ReactDOM.render(<Lifecycle />, document.getElementById('rootContainer'))
+          ReactDOM.render(<Lifecycle />, document.getElementById('rootContainer2'))
+
+      </script>
+  </body>
+</html>
