@@ -73,21 +73,32 @@
                     console.log(`Attempts: ${this.state.numberOfttempts}`)
                     var numberValueToCheck = this.inputTextBox.value;
 
-                    if(numberValueToCheck.length == 0 || isNaN(numberValueToCheck) || numberValueToCheck>100 || numberValueToCheck<0 )
+                    if(numberValueToCheck.length == 0 )
                     {
-                        console.log(`printing value ${numberValueToCheck}`);
                         var gameColorCssClassName = 'messageErrorCssClassName'
 
                         this.setState({
-                            message: 'Please enter an integer between 0 and 100',
+                            message: 'Please enter a value',
+                            gameColorCssClassName
+                        })
+                        return;
+                    }
+
+                    // A valid value entered
+                    this.state.numberOfttempts++;
+
+                    if(isNaN(numberValueToCheck) || numberValueToCheck>100 || numberValueToCheck<0 )
+                    {
+                        var gameColorCssClassName = 'messageErrorCssClassName'
+
+                        this.setState({
+                            message: 'Please enter a number between 0 and 100',
                             gameColorCssClassName
                         })
                         return;
                     }
 
                     this.state.gameColorCssClassName = 'messageGameRunningCssClassName'
-
-                    this.state.numberOfttempts++;
 
                     if(numberValueToCheck > this.state.numberToGuess){
 
