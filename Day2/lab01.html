@@ -9,9 +9,27 @@
     <body>
         <div id="rootContainer"></div>
 
+        <style type='text/css'>
+            .messageGameOverCssClassName{
+                color: green
+            }
+            .messageGameRunningCssClassName{
+                color: black
+            }
+
+            .messageErrorCssClassName{
+                color: red
+            }
+
+            .gameResetMessageColor{
+                color:blue
+            }
+
+        </style>
+
         <script type='text/jsx'>
 
-            class MainClass extends React.Component{
+            class MyGame extends React.Component{
 
                 constructor(props){
 
@@ -26,20 +44,28 @@
                     this.state = {
                         numberOfttempts: 0,
                         numberToGuess: randomNumber,
-                        message: ''
+                        message: '',
+                        gameColorCssClassName: 'messageGameRunningCssClassName'
                     }
                 }
 
                 resetButtonHandler(){
+                    // Direct Dom manipulaion??
                     this.inputTextBox.value = ''
-                    var randomNumber = this.getRandomNumber(0, 100)
+
+
+                    var numberToGuess = this.getRandomNumber(0, 100)
+                    var numberOfttempts = 0
+                    var message= 'New number Generated'
+                    var gameColorCssClassName = 'gameResetMessageColor'
 
                     this.setState({
-                        numberOfttempts: 0,
-                        numberToGuess: randomNumber,
-                        message: 'New number Generated'
+                        numberOfttempts,
+                        numberToGuess,
+                        message,
+                        gameColorCssClassName
                     })
-                    console.log(randomNumber)
+                    console.log(numberToGuess)
                 }
 
                 buttonClickHandler(){
@@ -50,11 +76,16 @@
                     if(numberValueToCheck.length == 0 || isNaN(numberValueToCheck) || numberValueToCheck>100 || numberValueToCheck<0 )
                     {
                         console.log(`printing value ${numberValueToCheck}`);
+                        var gameColorCssClassName = 'messageErrorCssClassName'
+
                         this.setState({
-                            message: 'Please enter an integer between 0 and 100'
+                            message: 'Please enter an integer between 0 and 100',
+                            gameColorCssClassName
                         })
                         return;
                     }
+
+                    this.state.gameColorCssClassName = 'messageGameRunningCssClassName'
 
                     this.state.numberOfttempts++;
 
@@ -70,8 +101,11 @@
                         })
                     }
                     else{
+                        var gameColorCssClassName = 'messageGameOverCssClassName'
+                        var message= 'Good job, you guessed right!'
                         this.setState({
-                            message: 'Good job, you guessed right'
+                            message,
+                            gameColorCssClassName
                         })
                     }
 
@@ -85,21 +119,27 @@
                 render(){
                     return(
                         <div>
-                            <input type='text' placeholder='guess the number'
+                            <input type='text' placeholder='Guess the number'
                             ref={(inputTB) => this.inputTextBox = inputTB}>
                             </input>
                             <br/>
                             <button onClick={this.buttonClickHandler} >Submit</button>
                             <br/>
                             <button onClick={this.resetButtonHandler}>Reset</button>
-                            <h3>{this.state.message}</h3>
-                            <h3>Number of Attempts: {this.state.numberOfttempts}</h3>
+                            <h3 className={this.state.gameColorCssClassName}>{this.state.message}</h3>
+
+                            {
+                                this.state.numberOfttempts != 0
+                                    ? <h3>Number of Attempts: {this.state.numberOfttempts}</h3>
+                                    : <h3></h3>
+                            }
+
                         </div>
                     )
                 }
             }
 
-            ReactDOM.render(<MainClass/>, document.getElementById('rootContainer'))
+            ReactDOM.render(<MyGame/>, document.getElementById('rootContainer'))
 
         </script>
 
