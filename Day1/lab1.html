@@ -1,0 +1,86 @@
+
+<html>
+  <head>
+    <script src="react.js"></script>
+    <script src="react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.25.0/babel.js">
+    </script>
+  </head>
+
+  <body>
+    <div id="rootContainer">
+    </div>
+
+    <div id="message"></div>
+
+    <script type="text/jsx">
+
+        var inputUserName = (
+          <div>
+            <input type="text" id="myUserName" placeholder="Username" />
+          </div>
+        );
+
+        var inputPassword = (
+          <div>
+            <input type="password" id="myPassword" placeholder="Password"/>
+          </div>
+        );
+
+        var errorLabel = (
+          <div id="errorLabelSpan">
+            <span style={{color: "#FF0000"}}>Invalid Username or Password</span>
+          </div>
+        );
+
+
+        var clickHandler = function(){
+            console.log("Button clicked");
+
+            var styleForegroundRed = {
+            	color:'red',
+            };
+
+            var styleForegroundGreen = {
+            	color:'green',
+            };
+
+
+            ReactDOM.render(<span>Logging In</span>, document.getElementById('message'));
+
+            var acceptableUserName = 'admin';
+            var acceptablePassword = 'admin';
+
+            var myUserName = document.getElementById('myUserName').value;
+            var myPassword = document.getElementById('myPassword').value;
+
+            if(myUserName == acceptableUserName && myPassword == acceptablePassword)
+            {
+                ReactDOM.render(<span style={styleForegroundGreen}>Success</span>, document.getElementById('message'));
+            }
+            else
+            {
+                ReactDOM.render(<span style={styleForegroundRed}>Invalid Username or Password</span>, document.getElementById('message'));
+            }
+        }
+
+        var appRoot = (
+            <div>
+              {inputUserName}
+              {inputPassword}
+              {errorLabel}
+
+              <button onClick={clickHandler}>Submit</button>
+
+            </div>
+        );
+
+
+        ReactDOM.render(appRoot, document.getElementById('rootContainer'));
+
+        document.getElementById("errorLabelSpan").style.visibility = "hidden";
+
+    </script>
+
+  </body>
+</html>
