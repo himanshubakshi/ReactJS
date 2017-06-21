@@ -54,6 +54,154 @@
                 }
             }
 
+            class UserDataTableComponent extends React.Component{
+
+                constructor(props)
+                {
+                    super(props)
+                    var rowsToDelete = []
+
+                    this.state = {
+                        rowsToDelete
+                    }
+
+                    this.populateRowItems = this.populateRowItems.bind(this)
+                }
+
+                render()
+                {
+                    return(
+                        <div>
+
+                            <form action="">
+
+                                <table>
+
+
+                                        {
+                                           this.props.rowItems.length > 0
+                                               ? <tr>
+                                                   <th>Name</th>
+                                                   <th>Age</th>
+                                                 </tr>
+                                               :  <tr></tr>
+                                        }
+
+                                        {this.populateRowItems()}
+
+                                </table>
+                            </form>
+                            <br/>
+
+                            {
+                               this.props.rowItems.length > 0
+                                   ? <button onClick={this.removeButtonClickHandler.bind(this)}>Remove</button>
+                                   :  <span></span>
+                            }
+
+                        </div>
+                    )
+                }
+
+                removeButtonClickHandler(){
+
+                    console.log(`namesTodelete :in table component`)
+
+                    // call mediator delete function with this.state.namesToDelete
+                    this.props.removeClickHandler(this.state.rowsToDelete)
+
+                    this.setState({
+                        rowsToDelete: []
+                    })
+                }
+
+                checkBoxStateChanged(e){
+                    console.log(`checked state: ${e.target.checked}`)
+                    console.log(`checked name: ${e.target.name}`)
+
+                    console.log(`checked value: ${e.target.value}`)
+
+
+                    // save checked ones in state
+
+                    var rowsToDelete = this.state.rowsToDelete
+
+                    if(e.target.checked){
+                        rowsToDelete.push({
+                            name: e.target.name,
+                            age: e.target.value
+                        });
+
+                        console.log(`added ${e.target.name} to delete list`);
+                    }
+                    else{
+
+
+                        // if rowsToDelete has the current element, remove it from there
+                        var found = false;
+                        var index;
+                        for(index = 0; index < rowsToDelete.length; index++)
+                        {
+                            if(rowsToDelete[index].name == e.target.name){
+                                found = true;
+                                break;
+                            }
+                        }
+
+                        if(found){
+                              rowsToDelete.splice(index, 1 );
+                        }
+
+
+                        //
+                        // var index = namesToDelete.indexOf({
+                        //         name: e.target.name,
+                        //         age: e.target.value
+                        //     });
+                        // if (index >= 0) {
+                        //   namesToDelete.splice( index, 1 );
+                        // }
+                        //
+                        // console.log(`removed  ${e.target.value} from delete list`);
+
+                    }
+
+
+                    // Print delete list
+
+                    rowsToDelete.forEach((item) => {
+                        console.log(`delete list item: ${item.name}, ${item.age}`);
+                    })
+
+                    this.setState({
+                        rowsToDelete
+                    })
+
+                }
+
+                populateRowItems(){
+
+                    var rowItemsJsx = []
+
+                    this.props.rowItems.forEach((item) => {
+                        rowItemsJsx.push(
+                             <tr>
+                                <td>{item.name}</td>
+                                <td>{item.age}</td>
+                                <td>
+                                    <input type="checkbox"
+                                            onChange={this.checkBoxStateChanged.bind(this)}
+                                            name={item.name}
+                                            value={item.age}></input>
+                                </td>
+                            </tr>
+                        )
+                    })
+
+                    return rowItemsJsx
+                }
+            }
+
             class MainComponent extends React.Component{
                 constructor(props)
                 {
@@ -64,6 +212,7 @@
                     }
 
                     this.handleRowEntry = this.handleRowEntry.bind(this)
+                    this.printRowItems = this.printRowItems.bind(this)
                 }
 
                 handleRowEntry(name, age){
@@ -91,7 +240,7 @@
                         })
                     }
 
-                    this.printRowItems(rowItems)
+                    this.printRowItems()
 
                     this.setState({
                         rowItems
@@ -99,12 +248,84 @@
 
                 }
 
-                printRowItems(items)
+                printRowItems()
                 {
                         console.log(`Printing RowItems`)
-                        items.forEach((row) => {
+                        this.state.rowItems.forEach((row) => {
                             console.log(`name: ${row.name}, age: ${row.age}`)
                         })
+                }
+
+                removeClickHandler(rowsToDelete){
+
+                    console.log(`namesTodelete length : ${rowsToDelete.length}`)
+
+
+                    var rowItems = this.state.rowItems;
+
+                    var updatedRowItems = [];
+
+                    rowItems.forEach((rowItem) => {
+
+                        var found = false
+
+                        for(var i = 0; i < rowsToDelete.length; i++)
+                        {
+                            if(rowsToDelete[i].name == rowItem.name){
+                                found = true;
+                                break;
+                            }
+                        }
+
+                        if(!found){
+
+                            updatedRowItems.push(rowItem)
+                        }
+                    })
+
+
+                    // rowsToDelete.forEach((rowToDelete) => {
+                    //
+                    //
+                    //     console.log(`checking if ${rowToDelete.name} exists`)
+                    //
+                    //     var found = false;
+                    //     for(var i = 0; i < rowItems.length; i++)
+                    //     {
+                    //         if(rowItems[i].name == rowToDelete.name){
+                    //
+                    //             console.log(`found`)
+                    //             found = true;
+                    //             break;
+                    //
+                    //
+                    //         }
+                    //         else{
+                    //             console.log(`not found`)
+                    //         }
+                    //     }
+                    //
+                    //     if(!found)
+                    //     {
+                    //         updatedRowItems.push(rowToDelete)
+                    //     }
+                    //     // rowItems.map(function(rowItem){
+                    //     //
+                    //     //         if(rowItem.age == nameToDelete){
+                    //     //
+                    //     //
+                    //     //             return
+                    //     //         }
+                    //     //         else{
+                    //     //             return rowItem
+                    //     //         }
+                    //     //
+                    //     // })
+                    // })
+
+                    this.setState({
+                        rowItems: updatedRowItems
+                    })
                 }
 
                 render()
@@ -112,10 +333,11 @@
                     return(
                         <div>
                             <h1>Welcome to Lab01 - Day3</h1>
-                            <UserInputComponent handleRowEntry={this.handleRowEntry}/>
+                            <UserInputComponent handleRowEntry={this.handleRowEntry} />
                             <hr/>
                             <br/>
 
+                            <UserDataTableComponent rowItems={this.state.rowItems} removeClickHandler={this.removeClickHandler.bind(this)}/>
 
 
 
