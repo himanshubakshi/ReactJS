@@ -1,0 +1,133 @@
+<html>
+
+  <head>
+      <script src="react.js"> </script>
+      <script src="react-dom.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.25.0/babel.js"></script>
+  </head>
+
+  <body>
+      <div id="root"></div>
+
+      <script type="text/jsx">
+
+            class UserInputComponent  extends React.Component{
+                constructor(props)
+                {
+                    super(props)
+
+                    this.addRowHandler = this.addRowHandler.bind(this)
+                }
+
+                addRowHandler(){
+
+                    var name = this.nameInputField.value
+                    var age =  this.ageInputField.value
+
+                    console.log(`name: ${name}`)
+                    console.log(`age: ${age}`)
+                    if(name.length > 0 && age.length > 0){
+
+                        // pass the values to the host container
+                        this.props.handleRowEntry(name, age)
+                    }
+                    else{
+                        alert('Please enter values in both the fields')
+                    }
+                }
+
+
+                render(){
+                    return(
+                        <div>
+                            <input type='text'
+                                    placeholder='Name'
+                                    ref={(ip) => this.nameInputField = ip} />
+                            <br/>
+                            <input type='text'
+                                    ref={(ip) => this.ageInputField = ip}
+                                    placeholder='Age' />
+                            <br/>
+                            <button onClick={this.addRowHandler}>Add Row</button>
+                        </div>
+                    )
+                }
+            }
+
+            class MainComponent extends React.Component{
+                constructor(props)
+                {
+                    super(props)
+
+                    this.state= {
+                        rowItems: []
+                    }
+
+                    this.handleRowEntry = this.handleRowEntry.bind(this)
+                }
+
+                handleRowEntry(name, age){
+                    console.log(`${name}, ${age}`)
+
+                    // create a map of name and age
+                    var rowItems = this.state.rowItems
+
+                    // check if the name already exists in rowItems
+                    var found = false;
+                    rowItems.forEach((value) => {
+
+                        if(value.name == name){
+                            found = true;
+                        }
+                    })
+
+                    console.log(`found name: ${found}`)
+
+                    if(!found)
+                    {
+                        rowItems.push({
+                            name,
+                            age
+                        })
+                    }
+
+                    this.printRowItems(rowItems)
+
+                    this.setState({
+                        rowItems
+                    })
+
+                }
+
+                printRowItems(items)
+                {
+                        console.log(`Printing RowItems`)
+                        items.forEach((row) => {
+                            console.log(`name: ${row.name}, age: ${row.age}`)
+                        })
+                }
+
+                render()
+                {
+                    return(
+                        <div>
+                            <h1>Welcome to Lab01 - Day3</h1>
+                            <UserInputComponent handleRowEntry={this.handleRowEntry}/>
+                            <hr/>
+                            <br/>
+
+
+
+
+                        </div>
+                    )
+                }
+            }
+
+
+            ReactDOM.render(<MainComponent />, document.getElementById('root'))
+      </script>
+
+  </body>
+
+</html>
